@@ -194,6 +194,8 @@ public class Biblioteca2025_entrega {
                     - 4 Para consultar el listado de prestamos general.
                     - 5 Para consultar el listado de prestamos de un usuario.
                     - 6 Para consultar el listado de prestamos de un libro.
+                    - 7 Para consultar el libro mas leido.
+                    - 8 Para consultar el usuario mas lector.
 
                     - 0 Para volver al menu principal.
                                                                                                                         """);            
@@ -221,6 +223,14 @@ public class Biblioteca2025_entrega {
                 }
                 case 6:{
                     listaPrestamosLibro();
+                    break;
+                }
+                case 7:{
+                    libroMasLeido();
+                    break;
+                }
+                case 8:{
+                    usuarioMasLector();
                     break;
                 }
                 default:{
@@ -283,7 +293,7 @@ public class Biblioteca2025_entrega {
         Scanner sc = new Scanner (System.in);
         System.out.println("Introduzca el ISBN del libro que desea eliminar.");
 
-        String isbn = sc.nextLine();
+        String isbn = solicitaIsbn();
         int posicionLibro = buscaIsbn(isbn);
         
         if (posicionLibro == -1){
@@ -307,14 +317,14 @@ public class Biblioteca2025_entrega {
                            __________________________________________________________________________________________________________""");
         
         Scanner sc=new Scanner (System.in);
-        String libro;
+        String isbn;
         int posicionLibro = -1;
         boolean existeLibro = false;
         do {
             System.out.println("Escribe el ISBN del libro a editar.");
             
-            libro = new String(sc.nextLine());
-            posicionLibro = buscaIsbn(libro);
+            isbn = solicitaIsbn();
+            posicionLibro = buscaIsbn(isbn);
             
             if(posicionLibro == -1){
                 System.out.println("Por favor, introduzca un libro registrado.");
@@ -388,7 +398,7 @@ public class Biblioteca2025_entrega {
         
         System.out.println("Introduzca el dni del usuario a eliminar.");
           
-        String dni = sc.nextLine();       
+        String dni = solicitaDni();       
         int posicionUsuario = buscaDni(dni);
         
         if(posicionUsuario == -1){
@@ -411,15 +421,15 @@ public class Biblioteca2025_entrega {
                            __________________________________________________________________________________________________________""");
         
         Scanner sc = new Scanner (System.in);
-        String usuario;
+        String dniUsuario;
         int posicionUsuario = -1;
         boolean existeUsuario = false;
         
         do {
             System.out.println("Escribe el DNI del usuario a editar.");
 
-            usuario = new String(sc.nextLine());
-            posicionUsuario = buscaDni(usuario);
+            dniUsuario = solicitaDni();
+            posicionUsuario = buscaDni(dniUsuario);
             
             if(posicionUsuario==-1){
                 System.out.println("Por favor, introduzca un DNI de un usuario registrado.");
@@ -599,6 +609,71 @@ public class Biblioteca2025_entrega {
         }
     }
     
+    private void libroMasLeido(){
+        ArrayList <Integer> contadoresLibros=new ArrayList();
+        int contador;
+        for (Libro l : libros) {
+            contador=0;
+            for (Prestamo p:prestamos) {
+                if (l==p.getLibroPrest()){
+                    contador++;
+                }
+            }
+            for (Prestamo p:prestamosHist) {
+                if (l==p.getLibroPrest()){
+                    contador++;
+                }
+            }
+            contadoresLibros.add(contador);
+        }
+        
+        int max=0;
+        for (int c:contadoresLibros){
+            if (c>max){
+                max=c;
+            }
+        }
+        System.out.println("El libro mas leido con " + max + " prestamos es: " );
+               
+        for (int i = 0; i < contadoresLibros.size(); i++) {
+            if (contadoresLibros.get(i)==max){
+                System.out.println(libros.get(i));
+            }
+        }
+    }
+    
+    private void usuarioMasLector(){
+        ArrayList <Integer> contadoresUsuarios=new ArrayList();
+        int contador;
+        for (Usuario u : usuarios) {
+            contador=0;
+            for (Prestamo p:prestamos) {
+                if (u==p.getUsuarioPrest()){
+                    contador++;
+                }
+            }
+            for (Prestamo p:prestamosHist) {
+                if (u==p.getUsuarioPrest()){
+                    contador++;
+                }
+            }
+            contadoresUsuarios.add(contador);
+        }
+        
+        int max=0;
+        for (int c:contadoresUsuarios){
+            if (c>max){
+                max=c;
+            }
+        }
+        System.out.println("El usuario mas lector con " + max + " prestamos es: " );
+               
+        for (int i = 0; i < contadoresUsuarios.size(); i++) {
+            if (contadoresUsuarios.get(i)==max){
+                System.out.println(usuarios.get(i));
+            }
+        }
+    }
     
     /*
     -------------------------------- Metodos auxiliares --------------------------------
@@ -623,10 +698,10 @@ public class Biblioteca2025_entrega {
     
     public String solicitaDni(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("Teclea el dni del usuario:");
         String dni=sc.next();
         return dni;
     }
+    
     
     /**
      * Método para solicitar por teclado el ISBN de un libro. pdte de validación
@@ -634,10 +709,10 @@ public class Biblioteca2025_entrega {
      */
     public String solicitaIsbn(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("Teclea el isbn del libro:");
         String isbn=sc.next();
         return isbn;
     }
+    
     
     /**
      * Método para buscar un dni en la colección usuarios
@@ -655,6 +730,7 @@ public class Biblioteca2025_entrega {
         return pos;       
     }
     
+    
      /**
      * Método para buscar un libro en la colección libros
      * @param isbn (String) del libro a buscar en la colección
@@ -670,6 +746,8 @@ public class Biblioteca2025_entrega {
         }
         return pos;       
     }
+    
+    
      /**
      * Método para buscar un préstamo en la colección préstamos
      * @param dni (String) del usuario que realizó el préstamo
