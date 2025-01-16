@@ -303,7 +303,7 @@ public class Biblioteca2025_entrega {
             libros.remove(posicionLibro);
             System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
                     + "El libro " + libroEliminado + " ha sido eliminado satisfactoriamente.\n"
-                    + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+                    + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
         }  
         
     }
@@ -409,7 +409,9 @@ public class Biblioteca2025_entrega {
             String usuarioEliminadoDni = usuarios.get(posicionUsuario).getDni();
             
             usuarios.remove(posicionUsuario);
-            System.out.println("El usuario " + usuarioEliminadoNom + " con DNI "+ usuarioEliminadoDni +" ha sido eliminado satisfactoriamente.\n");
+            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                    + "El usuario " + usuarioEliminadoNom + " con DNI "+ usuarioEliminadoDni +" ha sido eliminado satisfactoriamente.\n"
+                            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
         }  
     }
 
@@ -488,29 +490,34 @@ public class Biblioteca2025_entrega {
     
     
     private void nuevoPrestamo() {
-        System.out.println("Identificacion del usuario:");
+        System.out.println("Introduzca el DNI del usuario:");
         String dni=solicitaDni();
         int posUsuario = buscaDni(dni);
         
         if (posUsuario==-1){
-            System.out.println("No es aun usuario de la biblioteca");
+            System.out.println("El DNI introducido no pertenece a ningun usuario de la biblioteca.");
         }else{
-            System.out.println("Identificacion del libro:"); 
+            System.out.println("Introduzca el ISBN del libro:"); 
             String isbn=solicitaIsbn();
             int posLibro=buscaIsbn(isbn);
            
             if (posLibro==-1){
-                System.out.println("El ISBN pertenece a un libro inexistente");
+                System.out.println("El ISBN no pertenece a ningun libro de la biblioteca.");
             } else if (libros.get(posLibro).getEjemplares()>0){
                 if ((buscaPrestamo(dni,isbn))==-1){
-                    LocalDate hoy=LocalDate.now();
+                    LocalDate hoy = LocalDate.now();
                     prestamos.add(new Prestamo(libros.get(posLibro),usuarios.get(posUsuario),hoy,hoy.plusDays(15)));
                     libros.get(posLibro).setEjemplares(libros.get(posLibro).getEjemplares()-1);
                     }else{
-                        System.out.println("Ese usuario ya tiene ese mismo libro en prestamo");
+                        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                                + "El usuario " + usuarios.get(posUsuario).getNombre()+" ya tiene "
+                                + libros.get(posLibro).getTitulo()+" prestado.\n"
+                                        + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
                     }
                 }else{
-                    System.out.println("No quedan unidades disponibles del libro");
+                    System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                            + "No quedan unidades disponibles del libro\n"
+                            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
                 }
         }
     }
@@ -527,6 +534,10 @@ public class Biblioteca2025_entrega {
               .setEjemplares(libros.get(buscaIsbn(isbnLibro)).getEjemplares()+1);
             prestamosHist.add(prestamos.get(pos));
             prestamos.remove(pos);
+            
+            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                    + "Devolucion registrada correctamente."
+                    + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
         }
     }
     
@@ -542,11 +553,16 @@ public class Biblioteca2025_entrega {
         }else{
             prestamos.get(pos).setFechaDev(prestamos.get(pos).getFechaDev().plusDays(15));
             prestamos.get(pos).setFechaPrest(LocalDate.now());
+            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                    + "Prorroga registrada correctamente."
+                    + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
         }
     }
 
     private void listaPrestamos() {
-        System.out.println("Listado de prestamos activos");
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                + "                         Listado de prestamos activos"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");
         for (Prestamo p : prestamos) {
             if (p.getFechaDev().isBefore(LocalDate.now())){
                         System.out.print("Libro fuera de plazo: ");
@@ -554,7 +570,9 @@ public class Biblioteca2025_entrega {
             System.out.println(p);  
         }
         
-        System.out.println("\nListado de prestamos historicos");
+        System.out.println("\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                + "                         Listado de prestamos historicos"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");
         for (Prestamo p : prestamosHist) {
             System.out.println(p);  
         }
@@ -565,10 +583,10 @@ public class Biblioteca2025_entrega {
         int pos=buscaDni(dni);
         
         if (pos==-1){
-            System.out.println("No tengo a nadie con ese DNI");
+            System.out.println("El DNI introducido no corresponde con ningun usuario de la biblioteca.");
         }else{
-            System.out.println("Prestamos activos de: "
-                    + usuarios.get(pos).getNombre());
+            
+            System.out.println("Prestamos activos de " + usuarios.get(pos).getNombre() +":");
             for (Prestamo p : prestamos) {
                 if (p.getUsuarioPrest().getDni().equals(dni)){
                     if (p.getFechaDev().isBefore(LocalDate.now())){
@@ -577,8 +595,8 @@ public class Biblioteca2025_entrega {
                     System.out.println(p);  
                 }
             }
-            System.out.println("\nPrestamos ya devueltos por: "
-                    + usuarios.get(pos).getNombre());
+            
+            System.out.println("\nPrestamos ya devueltos por "+ usuarios.get(pos).getNombre() +":");
             for (Prestamo p : prestamosHist) {
                 if (p.getUsuarioPrest().getDni().equals(dni)){
                     System.out.println(p);  
@@ -591,16 +609,16 @@ public class Biblioteca2025_entrega {
         String isbn=solicitaIsbn();
         int pos=buscaIsbn(isbn);
         if (pos==-1){
-             System.out.println("No tengo ningún libro con ese ISBN");
+             System.out.println("El ISBN no se corresponde con ningun libro de la biblioteca.");
         }else{
-            System.out.println("Usuarios/as que lo estan leyendo");
+            System.out.println("Usuarios en posesion:");
             for (Prestamo p : prestamos) {
                 if (p.getLibroPrest().getIsbn().equals(isbn)){
                     System.out.println(p.getUsuarioPrest());
                 }
             }
             
-            System.out.println("Usuarios/as que ya lo han leido");
+            System.out.println("Usuarios que lo han leido:");
             for (Prestamo p : prestamosHist) {
                 if (p.getLibroPrest().getIsbn().equals(isbn)){
                     System.out.println(p.getUsuarioPrest());
@@ -795,5 +813,18 @@ public class Biblioteca2025_entrega {
         prestamos.add(new Prestamo(libros.get(5),usuarios.get(0), hoy.minusDays(20),hoy.minusDays(5)));
         prestamos.add(new Prestamo(libros.get(6),usuarios.get(2), hoy,hoy.plusDays(15)));
         prestamos.add(new Prestamo(libros.get(2),usuarios.get(1), hoy,hoy.plusDays(15)));
+        prestamos.add(new Prestamo(libros.get(1),usuarios.get(4), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamos.add(new Prestamo(libros.get(2),usuarios.get(4), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamos.add(new Prestamo(libros.get(3),usuarios.get(4), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamos.add(new Prestamo(libros.get(6),usuarios.get(4), hoy,hoy.plusDays(15)));
+        prestamos.add(new Prestamo(libros.get(6),usuarios.get(1), hoy,hoy.plusDays(15)));
+        
+        prestamosHist.add(new Prestamo(libros.get(0),usuarios.get(0), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamosHist.add(new Prestamo(libros.get(2),usuarios.get(0), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamosHist.add(new Prestamo(libros.get(7),usuarios.get(4), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamosHist.add(new Prestamo(libros.get(5),usuarios.get(4), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamosHist.add(new Prestamo(libros.get(1),usuarios.get(1), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamosHist.add(new Prestamo(libros.get(7),usuarios.get(2), hoy.minusDays(20),hoy.minusDays(5)));
+        prestamosHist.add(new Prestamo(libros.get(6),usuarios.get(3), hoy.minusDays(20),hoy.minusDays(5)));
     }
 }
