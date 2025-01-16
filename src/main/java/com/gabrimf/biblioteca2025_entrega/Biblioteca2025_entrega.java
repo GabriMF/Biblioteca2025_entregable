@@ -502,11 +502,16 @@ public class Biblioteca2025_entrega {
            
             if (posLibro==-1){
                 System.out.println("El ISBN no pertenece a ningun libro de la biblioteca.");
+                
             } else if (libros.get(posLibro).getEjemplares()>0){
+                
                 if ((buscaPrestamo(dni,isbn))==-1){
                     LocalDate hoy = LocalDate.now();
+                    
                     prestamos.add(new Prestamo(libros.get(posLibro),usuarios.get(posUsuario),hoy,hoy.plusDays(15)));
+                    
                     libros.get(posLibro).setEjemplares(libros.get(posLibro).getEjemplares()-1);
+                    
                     }else{
                         System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
                                 + "El usuario " + usuarios.get(posUsuario).getNombre()+" ya tiene "
@@ -522,15 +527,20 @@ public class Biblioteca2025_entrega {
     }
     
     private void devolucion() {
-        System.out.println("Datos para la prorroga del préstamo:");
+        System.out.println("Datos para la devolucion del préstamo:");
+        
+        System.out.println("Introduzca el ISBN del libro, por favor.");
         String isbnLibro=solicitaIsbn();
+        
         int pos=buscaPrestamo(solicitaDni(),isbnLibro);
+        
         if (pos==-1){
             System.out.println("No hay ningun préstamo con esos datos");
+            
         }else{
+            
             prestamos.get(pos).setFechaDev(LocalDate.now());
-            libros.get(buscaIsbn(isbnLibro))
-              .setEjemplares(libros.get(buscaIsbn(isbnLibro)).getEjemplares()+1);
+            libros.get(buscaIsbn(isbnLibro)).setEjemplares(libros.get(buscaIsbn(isbnLibro)).getEjemplares()+1);
             prestamosHist.add(prestamos.get(pos));
             prestamos.remove(pos);
             
@@ -541,19 +551,23 @@ public class Biblioteca2025_entrega {
     }
     
     private void prorroga() {
-        System.out.println("Datos para la prorroga del préstamo:");
+        System.out.println("Datos para la prorroga del préstamo.");
         
+        System.out.println("Introduzca el DNI del usuario.");
         String dni = solicitaDni();
+        System.out.println("Introduzca el ISBN del libro.");
         String isbn = solicitaIsbn();
+        
         int pos=buscaPrestamo(dni,isbn);
-        //int pos=buscaPrestamo(solicitaDni(),solicitaIsbn());
+        
         if (pos==-1){
             System.out.println("No hay ningun préstamo con esos datos");
         }else{
             prestamos.get(pos).setFechaDev(prestamos.get(pos).getFechaDev().plusDays(15));
             prestamos.get(pos).setFechaPrest(LocalDate.now());
+            
             System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-                    + "Prorroga registrada correctamente."
+                    + "                     Prorroga registrada correctamente."
                     + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
         }
     }
