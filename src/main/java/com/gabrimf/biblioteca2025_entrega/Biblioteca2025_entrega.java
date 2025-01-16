@@ -237,12 +237,101 @@ public class Biblioteca2025_entrega {
     
     
     private void nuevoLibro() {
+        String isbn, titulo, autor, genero;
+        int ejemplares;
+        
+        Scanner sc=new Scanner (System.in);
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                         Nuevo Libro
+                           __________________________________________________________________________________________________________""");
+        
+        System.out.println("Titulo: ");
+        titulo = sc.nextLine();
+        
+        System.out.println("Autor: ");
+        autor = sc.nextLine();
+             
+        System.out.println("Genero: ");
+        genero = sc.nextLine();
+        
+        System.out.println("ISBN: ");
+        isbn = sc.nextLine();
+        
+        System.out.println("Ejemplares: ");
+        ejemplares = sc.nextInt();
+        
+        Libro nuevoLibro = new Libro(isbn, titulo, autor, genero, ejemplares);
+        libros.add(nuevoLibro);
+        
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+            + "El libro " + nuevoLibro.getTitulo()+ " se ha agregado correctamente.\n"
+            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
+        
     }
 
     private void eliminarLibro() {
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                        Eliminar Libro
+                           __________________________________________________________________________________________________________""");
+        
+        Scanner sc = new Scanner (System.in);
+        System.out.println("Introduzca el ISBN del libro que desea eliminar.");
+
+        String isbn = sc.nextLine();
+        int posicionLibro = buscaIsbn(isbn);
+        
+        if (posicionLibro == -1){
+            System.out.println("Por favor, introduca un libro registrado.");
+        }else{
+            String libroEliminado = libros.get(posicionLibro).getTitulo();
+            libros.remove(posicionLibro);
+            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                    + "El libro " + libroEliminado + " ha sido eliminado satisfactoriamente.\n"
+                    + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        }  
+        
     }
 
     private void modificarLibros() {
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                         Editar Libro
+                           __________________________________________________________________________________________________________""");
+        
+        Scanner sc=new Scanner (System.in);
+        String libro;
+        int posicionLibro = -1;
+        boolean existeLibro = false;
+        do {
+            System.out.println("Escribe el ISBN del libro a editar.");
+            
+            libro = new String(sc.nextLine());
+            posicionLibro = buscaIsbn(libro);
+            
+            if(posicionLibro == -1){
+                System.out.println("Por favor, introduzca un libro registrado.");
+            }
+            if (posicionLibro!=-1){
+                existeLibro = true;
+            }
+        } while (existeLibro = false);
+
+        System.out.println("Introduzca cuandos libros quiere agregar o restar al total de ejemplares:");
+        int variacionEjemplares = sc.nextInt();
+        int nuevoEjemplares = libros.get(posicionLibro).getEjemplares() + variacionEjemplares;
+        libros.get(posicionLibro).setEjemplares(nuevoEjemplares);
+ 
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+            + "                 El libro "+ libros.get(posicionLibro).getTitulo() + ", con ISBN " + libros.get(posicionLibro).getIsbn() +" se ha modificado a correctamente.\n"
+            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
     }
 
     private void listaLibros() {
@@ -297,7 +386,7 @@ public class Biblioteca2025_entrega {
         
         Scanner sc = new Scanner (System.in);
         
-        System.out.println("Introduzca el dni del usuario a eliminar.\n Si desea consultar el registro de usuarios previamente, pulse 1.");
+        System.out.println("Introduzca el dni del usuario a eliminar.");
           
         String dni = sc.nextLine();       
         int posicionUsuario = buscaDni(dni);
