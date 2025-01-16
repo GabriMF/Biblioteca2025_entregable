@@ -52,9 +52,9 @@ public class Biblioteca2025_entrega {
 
             Por favor, pulsa alguna de las siguientes opciones:
 
-                    - 1 Para consultas sobre libros.
-                    - 2 Para consultas sobre usuarios.
-                    - 3 Para consultas sobre prestamos.
+                    - 1 Para gestiones sobre libros.
+                    - 2 Para gestiones sobre usuarios.
+                    - 3 Para gestiones sobre prestamos.
 
                     - 0 Para cerrar la aplicacion.
                                                                                                                         """);
@@ -258,12 +258,122 @@ public class Biblioteca2025_entrega {
     
     
     private void nuevoUsuario() {
+        String dni, nombre, email, telefono;
+        Scanner sc = new Scanner (System.in);
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                         Nuevo Usuario
+                           __________________________________________________________________________________________________________""");
+        
+        System.out.println("Nombre: ");
+        nombre = sc.nextLine();
+        
+        System.out.println("Telefono: ");
+        telefono = sc.nextLine();
+        
+        System.out.println("Email: ");
+        email = sc.nextLine();
+        
+        System.out.println("DNI: ");
+        dni = sc.nextLine();
+        
+        Usuario nuevoUsuario = new Usuario(dni, nombre, email, telefono);
+        usuarios.add(nuevoUsuario);
+        
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+            + "El usuario " + nuevoUsuario.getNombre()+ " se ha agregado correctamente.\n"
+            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
     }
 
     private void eliminarUsuario() {
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                        Eliminar Usuario
+                           __________________________________________________________________________________________________________""");
+        
+        Scanner sc = new Scanner (System.in);
+        
+        System.out.println("Introduzca el dni del usuario a eliminar.\n Si desea consultar el registro de usuarios previamente, pulse 1.");
+          
+        String dni = sc.nextLine();       
+        int posicionUsuario = buscaDni(dni);
+        
+        if(posicionUsuario == -1){
+            System.out.println("El DNI introducido no esta registrado.\n"
+                    + "Por favor, introduzca el dni de un usuario registrado.");
+        }else{
+            String usuarioEliminadoNom = usuarios.get(posicionUsuario).getNombre();
+            String usuarioEliminadoDni = usuarios.get(posicionUsuario).getDni();
+            
+            usuarios.remove(posicionUsuario);
+            System.out.println("El usuario " + usuarioEliminadoNom + " con DNI "+ usuarioEliminadoDni +" ha sido eliminado satisfactoriamente.\n");
+        }  
     }
 
     private void modificarUsuario() {
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                         Editar Usuario
+                           __________________________________________________________________________________________________________""");
+        
+        Scanner sc = new Scanner (System.in);
+        String usuario;
+        int posicionUsuario = -1;
+        boolean existeUsuario = false;
+        
+        do {
+            System.out.println("Escribe el DNI del usuario a editar.");
+
+            usuario = new String(sc.nextLine());
+            posicionUsuario = buscaDni(usuario);
+            
+            if(posicionUsuario==-1){
+                System.out.println("Por favor, introduzca un DNI de un usuario registrado.");
+            }
+            if (posicionUsuario!=-1){
+                existeUsuario = true;
+            }
+        } while (existeUsuario = false);
+        
+        System.out.println("""
+                           Por favor, indicque el valor a modificar.
+                                - 1. Nombre.
+                                - 2. Telefono.
+                                - 3. Correo Electronico.""");
+        int option;
+        option = sc.nextInt();
+        sc.nextLine();
+        switch(option){
+            case 1 :{
+                System.out.println("Introduzca el nuevo nombre:");
+                String nuevoNombre = new String(sc.nextLine());
+                usuarios.get(posicionUsuario).setNombre(nuevoNombre);
+                break;
+            }
+            case 2 :{
+                System.out.println("Introduzca el nuevo telefono:");
+                String nuevoNumero = new String(sc.nextLine());
+                usuarios.get(posicionUsuario).setTelefono(nuevoNumero);
+                break;
+            }
+            case 3 :{
+                System.out.println("Introduzca el nuevo correo electronico:");
+                String nuevoCorreo = new String(sc.nextLine());
+                usuarios.get(posicionUsuario).setEmail(nuevoCorreo);
+                break;
+            }
+            default:{
+                System.out.println("Introduzca una opcion valida.");
+            }
+        } 
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+            + "                 El usuario "+ usuarios.get(posicionUsuario).getNombre() +" se ha modificado correctamente.\n"
+            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
     }
 
     private void listaUsuarios() {
@@ -305,6 +415,7 @@ public class Biblioteca2025_entrega {
                 }
         }
     }
+    
     private void devolucion() {
         System.out.println("Datos para la prorroga del préstamo:");
         String isbnLibro=solicitaIsbn();
@@ -319,6 +430,7 @@ public class Biblioteca2025_entrega {
             prestamos.remove(pos);
         }
     }
+    
     private void prorroga() {
         System.out.println("Datos para la prorroga del préstamo:");
         
@@ -426,6 +538,7 @@ public class Biblioteca2025_entrega {
         String dni=sc.next();
         return dni;
     }
+    
     /**
      * Método para solicitar por teclado el ISBN de un libro. pdte de validación
      * @return (String) isbn del libro tecleado
