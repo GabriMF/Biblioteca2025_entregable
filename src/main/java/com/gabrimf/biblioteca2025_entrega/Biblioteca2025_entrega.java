@@ -1,6 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 
 package com.gabrimf.biblioteca2025_entrega;
 
@@ -9,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
  * @author gabri
  */
+
 public class Biblioteca2025_entrega {
  
     private ArrayList <Libro> libros;
@@ -33,11 +30,9 @@ public class Biblioteca2025_entrega {
        b.menuPrincipal();
     }
     
-    
     /*
     -------------------------------- Menus --------------------------------
     */
-    
     
     private void menuPrincipal(){
         Scanner sc=new Scanner (System.in);
@@ -239,11 +234,9 @@ public class Biblioteca2025_entrega {
         }while (option != 0);
     }
     
-    
     /*
     -------------------------------- Gestion Libros --------------------------------
     */
-    
     
     private void nuevoLibro() {
         String isbn, titulo, autor, genero;
@@ -349,11 +342,9 @@ public class Biblioteca2025_entrega {
         }
     }
     
-    
     /*
     -------------------------------- Gestion Usuarios --------------------------------
     */
-    
     
     private void nuevoUsuario() {
         String dni, nombre, email, telefono;
@@ -482,12 +473,10 @@ public class Biblioteca2025_entrega {
         }
     }
     
-    
     /*
     -------------------------------- Gestion Prestamos --------------------------------
     */
-    
-    
+        
     private void nuevoPrestamo() {
         System.out.println("Introduzca el DNI del usuario:");
         String dni=solicitaDni();
@@ -709,8 +698,7 @@ public class Biblioteca2025_entrega {
     /*
     -------------------------------- Metodos auxiliares --------------------------------
     */
-    
-    
+        
     /**
      * Método para solicitar por teclado el DNI de un usuario. pdte de validación
      * @return (String) dni del usuario tecleado
@@ -725,14 +713,35 @@ public class Biblioteca2025_entrega {
         }
     }
           
+    public boolean esInt(String s){
+        int n;
+        try {
+            n = Integer.parseInt(s);
+            return true;
+            
+        } catch (NumberFormatException e) {
+            return false;
+            
+        }
+    }    
     
+    public boolean esDouble(String s){
+        Double n;
+        try {
+            n = Double.parseDouble(s);
+            return true;
+            
+        } catch (NumberFormatException e) {
+            return false;
+            
+        }
+    }
     
     public String solicitaDni(){
         Scanner sc=new Scanner(System.in);
         String dni=sc.next();
         return dni;
     }
-    
     
     /**
      * Método para solicitar por teclado el ISBN de un libro. pdte de validación
@@ -797,7 +806,6 @@ public class Biblioteca2025_entrega {
         }
         return pos;       
     }
-    
     
     public void cargaDatos(){
         
